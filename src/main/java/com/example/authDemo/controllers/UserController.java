@@ -1,5 +1,6 @@
 package com.example.authDemo.controllers;
 
+import com.example.authDemo.dtos.UserDto;
 import com.example.authDemo.entities.User;
 import com.example.authDemo.services.UserService;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<User>> allUsers() {
-        List <User> users = userService.allUsers();
+    public ResponseEntity<List<UserDto>> allUsers() {
+        List <UserDto> users = userService.usersList();
         return ResponseEntity.ok(users);
     }
 }
