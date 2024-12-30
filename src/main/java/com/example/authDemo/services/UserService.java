@@ -3,6 +3,8 @@ package com.example.authDemo.services;
 import com.example.authDemo.dtos.UserDto;
 import com.example.authDemo.dtos.UserDtoMapper;
 import com.example.authDemo.entities.User;
+import com.example.authDemo.exceptions.UserNotFoundException;
+import com.example.authDemo.exceptions.UserServiceLogicException;
 import com.example.authDemo.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,6 +42,24 @@ public class UserService {
                 .stream()
                 .map(userDtoMapper)
                 .collect(Collectors.toList());
+    }
+
+    public UserDto updateUser(UserDto newUserDetails, String email)
+            throws UserNotFoundException, UserServiceLogicException {
+        try {
+            User user = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException("User not found with id " + email));
+
+            user.setEmail(newUserDetails.email());
+            user.setFullName(newUserDetails.fullName());
+
+            userRepository.save(user);
+            return newUserDetails;
+
+        }catch(UserNotFoundException e){
+            throw new UserNotFoundException(e.getMessage());
+        }catch(Exception e) {
+            throw new UserServiceLogicException();
+        }
     }
 
 }

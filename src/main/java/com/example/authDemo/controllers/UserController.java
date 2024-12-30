@@ -2,6 +2,8 @@ package com.example.authDemo.controllers;
 
 import com.example.authDemo.dtos.UserDto;
 import com.example.authDemo.entities.User;
+import com.example.authDemo.exceptions.UserNotFoundException;
+import com.example.authDemo.exceptions.UserServiceLogicException;
 import com.example.authDemo.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,13 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = (User) authentication.getPrincipal();
         return ResponseEntity.ok(currentUser);
+    }
+    @PatchMapping("/me")
+    public ResponseEntity<UserDto> updateMe(@RequestBody  UserDto newUserDetails) throws UserNotFoundException, UserServiceLogicException {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) authentication.getPrincipal();
+        UserDto newUser = userService.updateUser(newUserDetails, currentUser.getEmail());
+        return ResponseEntity.ok(newUser);
     }
 
     @GetMapping("/")
