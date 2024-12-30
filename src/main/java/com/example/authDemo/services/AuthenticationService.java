@@ -3,6 +3,7 @@ package com.example.authDemo.services;
 import com.example.authDemo.dtos.LoginUserDto;
 import com.example.authDemo.dtos.RegisterUserDto;
 import com.example.authDemo.entities.User;
+import com.example.authDemo.enums.UserRole;
 import com.example.authDemo.repositories.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,6 +31,7 @@ public class AuthenticationService {
         user.setFullName(input.getFullName());
         user.setEmail(input.getEmail());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setRole(UserRole.CLIENT);
 
 
         return userRepository.save(user);
