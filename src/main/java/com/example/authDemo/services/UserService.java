@@ -31,5 +31,15 @@ public class UserService {
                 .map(userDtoMapper)
                 .collect(Collectors.toList());
     }
+    public List<UserDto> usersByFullName(String search) {
+        if (search == null || search.trim().isEmpty()) {
+            throw new IllegalArgumentException("Search parameter cannot be null or empty.");
+        }
+
+        return userRepository.findByFullNameContainingIgnoreCase(search)
+                .stream()
+                .map(userDtoMapper)
+                .collect(Collectors.toList());
+    }
 
 }
